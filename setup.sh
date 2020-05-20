@@ -8,12 +8,16 @@ OLD_VERSION="1.14.4"
 #no more editing below needed
 DP_PATH=$FOLDER/minecraft-data/data
 
+#update npm just in case
+npm install -g npm
+
 # delete all in case we did this before
 rm -rf $FOLDER/burger
 rm -rf $FOLDER/burger-extractor
 rm -rf $FOLDER/minecraft-assets
 rm -rf $FOLDER/minecraft-data
 rm -rf $FOLDER/minecraft-jar-extractor
+rm -rf $FOLDER/minecraft-wiki-extractor
 
 # make a folder for the burger file
 mkdir burger_json_target
@@ -24,6 +28,7 @@ git clone https://github.com/PrismarineJS/burger-extractor.git
 git clone https://github.com/rom1504/minecraft-assets.git
 git clone https://github.com/PrismarineJS/minecraft-data.git
 git clone https://github.com/PrismarineJS/minecraft-jar-extractor
+git clone https://github.com/uncovery/minecraft-wiki-extractor
 
 cd $FOLDER/burger
 # setup Burger
@@ -75,3 +80,17 @@ unlink  $DP_PATH/dataPaths.json
 mv $DP_PATH/tmp.json  $DP_PATH/dataPaths.json
 
 echo "done!"
+
+# image extraction:
+
+cd $FOLDER/minecraft-jar-extractor
+
+npm install
+
+node image_names.js $MY_VERSION out tmp
+
+cd $FOLDER/minecraft-wiki-extractor
+
+npm install
+
+node ./bin/enchantments_to_json.js $DP_PATH/pc/$MY_VERSION/ 2020-05-11T00:00:00Z
